@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="SystemForTesting.Views.TestQuestionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SystemForTesting.Views"
+             xmlns:services="clr-namespace:SystemForTesting.Services"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:viewModels="clr-namespace:SystemForTesting.ViewModels"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance {x:Type viewModels:TestQuestionViewModel}}"
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="GroupHeaderTemplate">
+            <TextBlock Text="{Binding}" FontSize="16" FontWeight="Light" TextAlignment="Center"/>
+        </DataTemplate>
+        <services:YesNoToBooleanConverter x:Key="myBoolConverter" />
+        <services:IntToDecimalConverter x:Key="myIntConverter" />
+        <dxe:BytesToImageSourceConverter x:Key="BytesToImageSourceConverter"></dxe:BytesToImageSourceConverter>
+    </UserControl.Resources>
+    <Grid Margin="5">
+        <DockPanel LastChildFill="True">
+            <dxlc:LayoutGroup Header="{Binding TitleQuestion}" DockPanel.Dock="Top" View="GroupBox" Orientation="Vertical"
+                              IsCollapsible="False" Margin="0 0 0 5">
+                <dxlc:LayoutGroup.GroupBoxStyle>
+                    <Style TargetType="dxlc:GroupBox">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="DarkGray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Padding" Value="5" />
+                        <Setter Property="TitleVisibility" Value="Visible" />
+                    </Style>
+                </dxlc:LayoutGroup.GroupBoxStyle>
+                <dxlc:LayoutItem Label="Текст вопроса" LabelPosition="Top" Margin="10 0 10 5">
+                    <dxe:TextEdit HorizontalAlignment="Left" MaxHeight="{Binding MaxHeightQuestion, Mode=TwoWay}" VerticalAlignment="Top"
+                             Text="{Binding QuestionObject.Content, Mode=TwoWay}" MinWidth="300"
+                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                             AcceptsReturn="True" AcceptsTab="True" IsReadOnly="True" FontSize="14"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Количество баллов" Margin="5 0 5 0">
+                    <StackPanel Orientation="Horizontal">
+                        <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="10 0 0 0"
+                                      Value="{Binding QuestionObject.Score, Converter={StaticResource myIntConverter}, Mode=TwoWay}" 
+                                      IsFloatValue="False" MinValue="0" IsReadOnly="True"/>
+                        <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standart" Margin="15 0 0 0"
+                                            BarItemDisplayMode="Default" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <dxb:BarButtonItem Glyph="{dx:DXImage Image=Show_32x32.png}" Command="{Binding OpenImageCommand}"
+                                            Content="Увеличить" Hint="Открыть изображение"/>
+                        </dxb:ToolBarControl>
+                    </StackPanel>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem HorizontalAlignment="Center">
+                    <DockPanel LastChildFill="True" HorizontalAlignment="Left">
+                        <Image Stretch="Uniform" MaxHeight="350" Margin="5" RenderOptions.BitmapScalingMode="HighQuality">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding QuestionObject.ContentImage, Converter={StaticResource BytesToImageSourceConverter}}"></Setter>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </DockPanel>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+
+
+            <!--ТАБЛИЦА С ОТВЕТАМИ-->
+            <dxlc:LayoutGroup Header="Варианты ответа" View="GroupBox" GroupBoxDisplayMode="Light"
+                              HeaderTemplate="{StaticResource GroupHeaderTemplate}"
+                              >
+                <dxlc:LayoutGroup.GroupBoxStyle>
+                    <Style TargetType="dxlc:GroupBox">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="DarkGray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Padding" Value="5" />
+                        <Setter Property="TitleVisibility" Value="Visible" />
+                    </Style>
+                </dxlc:LayoutGroup.GroupBoxStyle>
+                <DockPanel LastChildFill="True">
+                    <dxg:GridControl                             
+                                     ItemsSource="{Binding AnswersCollection}"
+                                     SelectedItem="{Binding SelectedAnswer}"
+                                     SelectionMode="Row"
+                                     HorizontalAlignment="Stretch" 
+                                     VerticalAlignment="Stretch"
+                                     >
+                        <dxg:GridControl.View>
+                            <dxg:TableView 
+                                AllowPerPixelScrolling="True" 
+                                AutoWidth="False"
+                                AllowBestFit="False"                                   
+                                BestFitMode="VisibleRows"     
+                                ShowGroupPanel="False"
+                                ShowAutoFilterRow="False" 
+                                ShowSearchPanelCloseButton="True"
+                                HorizontalScrollbarVisibility="Auto"
+                                VerticalScrollbarVisibility="Auto"
+                                AllowMoveColumnToDropArea="False"
+                                AllowScrollAnimation="True" 
+                                FontSize="14"
+                                UseLayoutRounding="False">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EventToCommand EventName="MouseDoubleClick" Command="{Binding OpenImageAnswerCommand}"></dxmvvm:EventToCommand>
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="FlagSelected" Header="Ответ верный" 
+                                            HorizontalHeaderContentAlignment="Center"  MinWidth="100" MaxWidth="100" FixedWidth="True"
+                                            Binding="{Binding FlagSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:CheckEditSettings HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Answer.Content" Header="Текст ответа" HorizontalHeaderContentAlignment="Center"
+                                            Width="*" ReadOnly="True"
+                                            Binding="{Binding Answer.Content, Mode=TwoWay}">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Answer.ContentImage" Header="Изображение" HorizontalHeaderContentAlignment="Center" Width="0.4*"
+                                            Binding="{Binding Answer.ContentImage, Mode=TwoWay, Converter={StaticResource BytesToImageSourceConverter}}"
+                                            ReadOnly="True">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ImageEditSettings HorizontalContentAlignment="Center" Stretch="Uniform" MaxWidth="200"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </DockPanel>
+            </dxlc:LayoutGroup>
+        </DockPanel>
+    </Grid>
+</UserControl>

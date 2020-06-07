@@ -1,0 +1,75 @@
+﻿<catel:DataWindow x:Class="SystemForTesting.Views.TestFinishView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SystemForTesting.Views"
+        xmlns:catel="http://schemas.catelproject.com"
+        xmlns:viewModels="clr-namespace:SystemForTesting.ViewModels"
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:services="clr-namespace:SystemForTesting.Services"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        d:DataContext="{d:DesignInstance viewModels:TestFinishViewModel}"
+        Title="{Binding Title}">
+
+    <!-- Resources -->
+    <catel:DataWindow.Resources>
+        <services:IntToDecimalConverter x:Key="myIntConverter" />
+        <services:YesNoToBooleanConverter x:Key="myBoolConverter" />
+        <services:BooleanToVisibilityConverter x:Key="myBoolToVisibleConverter"></services:BooleanToVisibilityConverter>
+    </catel:DataWindow.Resources>
+
+
+    <Grid>
+        <dxlc:LayoutGroup Header="Результаты теста" View="GroupBox" Orientation="Vertical"  
+                          IsCollapsible="False" Margin="10">
+            <dxlc:LayoutGroup.GroupBoxStyle>
+                <Style TargetType="dxlc:GroupBox">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="DarkGray" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="TitleVisibility" Value="Visible" />
+                </Style>
+            </dxlc:LayoutGroup.GroupBoxStyle>
+            <dxlc:LayoutItem Label="Название теста" LabelPosition="Top" Margin="5 0 5 0" FontSize="14">
+                <dxe:TextEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="500"
+                              Text="{Binding NameTest, Mode=TwoWay}" IsReadOnly="True"
+                              VerticalScrollBarVisibility="Auto"
+                              AcceptsReturn="True" AcceptsTab="True"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="ФИО студента" LabelPosition="Top" Margin="5 0 5 0" FontSize="14">
+                <dxe:TextEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="500"
+                              Text="{Binding Fio, Mode=TwoWay}" IsReadOnly="True"
+                              VerticalScrollBarVisibility="Auto"
+                              AcceptsReturn="True" AcceptsTab="True"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Номер группы" LabelPosition="Top" Margin="5 0 5 0" FontSize="14">
+                <dxe:TextEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="500"
+                              Text="{Binding Student.GroupNumber, Mode=TwoWay}" IsReadOnly="True"
+                              VerticalScrollBarVisibility="Auto"
+                              AcceptsReturn="True" AcceptsTab="True"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Оценка" LabelPosition="Top" Margin="5 0 5 0" FontSize="14">
+                <dxe:TextEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="500"
+                              Text="{Binding Rating, Mode=TwoWay}" IsReadOnly="True"
+                              VerticalScrollBarVisibility="Auto"
+                              AcceptsReturn="True" AcceptsTab="True"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Время решения (секунд)" LabelPosition="Top" Margin="5 0 0 10"  FontSize="14">
+                <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"
+                              Value="{Binding Result.Duration, Converter={StaticResource myIntConverter}, Mode=TwoWay}" IsFloatValue="False" 
+                              IsReadOnly="True"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Рекомендации" LabelPosition="Top" Margin="5 0 5 0" FontSize="14"
+                             Visibility="{Binding IsRecommendCommentVisible, Converter={StaticResource myBoolToVisibleConverter}, UpdateSourceTrigger=PropertyChanged}">
+                <dxe:TextEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="500"
+                              Text="{Binding RecommendComment, Mode=TwoWay}" IsReadOnly="True"
+                              VerticalScrollBarVisibility="Auto"
+                              AcceptsReturn="True" AcceptsTab="True"/>
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+    </Grid>
+</catel:DataWindow>

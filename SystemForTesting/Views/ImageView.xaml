@@ -1,0 +1,29 @@
+﻿<catel:DataWindow x:Class="SystemForTesting.Views.ImageView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SystemForTesting.Views"
+        xmlns:viewModels="clr-namespace:SystemForTesting.ViewModels"
+        xmlns:catel="http://schemas.catelproject.com"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        mc:Ignorable="d"
+        WindowState="Normal"
+        ResizeMode="CanResize"
+        d:DataContext="{d:DesignInstance {x:Type viewModels:ImageViewModel}}"
+        Title="{Binding Title}" MaxWidth="1000" MaxHeight="1000">
+
+    <catel:DataWindow.Resources>
+        <dxe:BytesToImageSourceConverter x:Key="BytesToImageSourceConverter"></dxe:BytesToImageSourceConverter>
+    </catel:DataWindow.Resources>
+
+    <Grid>
+        <Image Stretch="Uniform" Margin="5" RenderOptions.BitmapScalingMode="HighQuality">
+            <Image.Style>
+                <Style TargetType="Image">
+                    <Setter Property="Source" Value="{Binding ImageObject, Converter={StaticResource BytesToImageSourceConverter}}"></Setter>
+                </Style>
+            </Image.Style>
+        </Image>
+    </Grid>
+</catel:DataWindow>

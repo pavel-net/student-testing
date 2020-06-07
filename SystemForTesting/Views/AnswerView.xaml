@@ -1,0 +1,50 @@
+﻿<catel:DataWindow x:Class="SystemForTesting.Views.AnswerView"
+                  xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:local="clr-namespace:SystemForTesting.Views"
+                  mc:Ignorable="d"
+                  xmlns:viewModels="clr-namespace:SystemForTesting.ViewModels"
+                  xmlns:services="clr-namespace:SystemForTesting.Services"
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                  xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:catel="http://schemas.catelproject.com"
+                  ResizeMode="CanResize"
+                  WindowState="Normal"   
+                  d:DataContext="{d:DesignInstance viewModels:AnswerViewModel}"
+                  Title="{Binding Title}" Height="200" Width="550">
+
+    <!-- Resources -->
+    <catel:DataWindow.Resources>
+        <DataTemplate x:Key="GroupHeaderTemplate">
+            <TextBlock Text="{Binding}" FontSize="16" FontWeight="Light" TextAlignment="Center"></TextBlock>
+        </DataTemplate>
+        <services:YesNoToBooleanConverter x:Key="myBoolConverter" />
+    </catel:DataWindow.Resources>
+
+    <Grid>
+        <dxlc:LayoutControl Orientation="Vertical" StretchContentVertically="True" Margin="0,10,0,0" >
+            <dxlc:LayoutGroup Orientation="Horizontal">
+                <dxlc:LayoutGroup Header="Текст ответа" Orientation="Vertical" VerticalAlignment="Center">
+                    <dxlc:LayoutItem Label="Текст ответа">
+                        <!--<dxe:TextEdit TextWrapping="Wrap" EditValue="{Binding Content}" Width="400" HorizontalAlignment="Left" />-->
+                        <TextBox HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="400"
+                                 Text="{Binding Content, Mode=TwoWay}"
+                                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                 AcceptsReturn="True" AcceptsTab="True"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Ответ верный">
+                        <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"
+                                  IsChecked="{Binding FlagCorrectly, Converter={StaticResource myBoolConverter}, Mode=TwoWay}"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Изображение">
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutControl>
+    </Grid>
+</catel:DataWindow>

@@ -1,0 +1,65 @@
+﻿<catel:DataWindow x:Class="SystemForTesting.Views.TestView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SystemForTesting.Views"
+        xmlns:catel="http://schemas.catelproject.com"
+        xmlns:services="clr-namespace:SystemForTesting.Services"
+        xmlns:viewModels="clr-namespace:SystemForTesting.ViewModels"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        mc:Ignorable="d"
+        MinHeight="200"
+        ShowInTaskbar="True"                  
+        SizeToContent="WidthAndHeight" 
+        ResizeMode="CanResize"
+        WindowState="Normal"   
+        d:DataContext="{d:DesignInstance viewModels:TestViewModel}"
+        Title="{Binding Title}">
+
+    <!-- Resources -->
+    <catel:DataWindow.Resources>
+        <services:IntToDecimalConverter x:Key="myIntConverter" />
+    </catel:DataWindow.Resources>
+
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <dxb:ToolBarControl DockPanel.Dock="Top" AllowQuickCustomization="False" Caption="Standard" BarItemDisplayMode="ContentAndGlyph">
+                <dxb:BarButtonItem Glyph="{dx:DXImage Image=Bar_16x16.png}" Command="{Binding OpenStatisticsCommand}" 
+                                   IsEnabled="{Binding IsStaticticsEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Content="Результаты тестирований" Hint="Добавить новую тему" ></dxb:BarButtonItem>
+            </dxb:ToolBarControl>
+
+            <dxlc:LayoutGroup Header="Настройки теста" View="GroupBox" Orientation="Vertical"  
+                              IsCollapsible="False" Margin="10">
+                <dxlc:LayoutGroup.GroupBoxStyle>
+                    <Style TargetType="dxlc:GroupBox">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="DarkGray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Padding" Value="5" />
+                        <Setter Property="TitleVisibility" Value="Visible" />
+                    </Style>
+                </dxlc:LayoutGroup.GroupBoxStyle>
+                <dxlc:LayoutItem Label="Название" LabelPosition="Top" Margin="5 0 5 0">
+                    <dxe:TextEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="500"
+                             Text="{Binding Name, Mode=TwoWay}"
+                             VerticalScrollBarVisibility="Auto"
+                             AcceptsReturn="True" AcceptsTab="True"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Всего вопросов в заданной теме (дисциплине)" LabelPosition="Top" Margin="5 0 5 0">
+                    <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" IsReadOnly="True"
+                                      Value="{Binding CountThemeQuestion, Converter={StaticResource myIntConverter}, Mode=TwoWay}" IsFloatValue="False" MinValue="0"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Количество вопросов для теста" LabelPosition="Top" Margin="5 0 0 10">
+                    <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"
+                                      Value="{Binding CountQuestions, Converter={StaticResource myIntConverter}, Mode=TwoWay}" IsFloatValue="False" 
+                                      MinValue="0" MaxValue="{Binding CountThemeQuestion, Converter={StaticResource myIntConverter}, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+        </DockPanel>
+    </Grid>
+</catel:DataWindow>

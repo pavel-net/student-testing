@@ -1,0 +1,335 @@
+﻿<catel:DataWindow
+                  xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:local="clr-namespace:SystemForTesting.Views"
+                  xmlns:viewModels="clr-namespace:SystemForTesting.ViewModels"
+                  xmlns:services="clr-namespace:SystemForTesting.Services"
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                  xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:catel="http://schemas.catelproject.com"
+                  xmlns:SystemForTesting="clr-namespace:SystemForTesting"
+                  xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                  x:Class="SystemForTesting.Views.QuestionView"
+                  mc:Ignorable="d"
+                  ResizeMode="CanResize"
+                  WindowStartupLocation="Manual" Top="50" Left="200"
+                  WindowState="Normal"   
+                  SizeToContent="Manual"
+                  d:DataContext="{d:DesignInstance {x:Type viewModels:QuestionViewModel}}"
+                  Title="{Binding Title}" Width="1000" Height="1000">
+    <!-- Resources -->
+    <catel:DataWindow.Resources>
+        <DataTemplate x:Key="GroupHeaderTemplate">
+            <TextBlock Text="{Binding}" FontSize="16" FontWeight="Light" TextAlignment="Center"/>
+        </DataTemplate>
+        <services:IntToDecimalConverter x:Key="myIntConverter" />
+        <services:YesNoToBooleanConverter x:Key="myBoolConverter" />
+        <dxe:BytesToImageSourceConverter x:Key="BytesToImageSourceConverter"></dxe:BytesToImageSourceConverter>
+    </catel:DataWindow.Resources>
+
+    <Grid>
+        <!--<dxlc:LayoutControl Orientation="Vertical" StretchContentVertically="True" Margin="0,0,0, 0">-->
+        <DockPanel LastChildFill="True">
+            <DockPanel LastChildFill="True" DockPanel.Dock="Top" Margin="5 5 5 0">
+                <dxlc:LayoutGroup Header="Изображение вопроса" DockPanel.Dock="Right" View="GroupBox" Orientation="Vertical" VerticalAlignment="Top"
+                                  IsCollapsible="False" Margin="10 0 0 5" MinWidth="200">
+                    <dxlc:LayoutGroup.GroupBoxStyle>
+                        <Style TargetType="dxlc:GroupBox">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="DarkGray" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Padding" Value="5" />
+                            <Setter Property="TitleVisibility" Value="Visible" />
+                        </Style>
+                    </dxlc:LayoutGroup.GroupBoxStyle>
+                    <dxlc:LayoutItem Margin="5 0 0 0">
+                        <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard"
+                                            BarItemDisplayMode="Default" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <dxb:BarButtonItem Glyph="{dx:DXImage Image=Show_32x32.png}" Command="{Binding OpenImageCommand}"
+                                               Content="Увеличить" Hint="Открыть изображение">
+                            </dxb:BarButtonItem>
+                            <dxb:BarButtonItem Glyph="{dx:DXImage Image=ImportImage_32x32.png}" Command="{Binding LoadImageCommand}"
+                                               Content="Добавить" Hint="Добавить изображение">
+                            </dxb:BarButtonItem>
+                            <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_32x32.png}" Command="{Binding DeleteImageCommand}"  
+                                               Content="Удалить" Hint="Удалить изображение">
+                            </dxb:BarButtonItem>
+                        </dxb:ToolBarControl>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem HorizontalAlignment="Center">
+                        <DockPanel LastChildFill="True">
+                            <Image Stretch="Uniform" MaxWidth="500" MaxHeight="350" Margin="5" RenderOptions.BitmapScalingMode="HighQuality">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{Binding ContentImage, Converter={StaticResource BytesToImageSourceConverter}}"></Setter>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DockPanel>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="Свойства вопроса" View="GroupBox" Orientation="Vertical"  
+                              IsCollapsible="False" Margin="0 0 0 5">
+                    <dxlc:LayoutGroup.GroupBoxStyle>
+                        <Style TargetType="dxlc:GroupBox">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="DarkGray" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Padding" Value="5" />
+                            <Setter Property="TitleVisibility" Value="Visible" />
+                        </Style>
+                    </dxlc:LayoutGroup.GroupBoxStyle>
+                    <dxlc:LayoutItem Label="Текст вопроса" LabelPosition="Top" Margin="5 0 5 0">
+                        <dxe:TextEdit HorizontalAlignment="Stretch" MaxHeight="100" VerticalAlignment="Top" MinWidth="400" 
+                             Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="14"
+                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                             AcceptsReturn="True" AcceptsTab="True"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Количество баллов" Margin="5 0 5 0">
+                        <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="35 0 0 0"
+                                      Value="{Binding Score, Converter={StaticResource myIntConverter}, Mode=TwoWay}" IsFloatValue="False" MinValue="0"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Время на вопрос (секунд)" Margin="5 0 5 0">
+                        <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"
+                                      Value="{Binding Duration, Converter={StaticResource myIntConverter}, Mode=TwoWay}" IsFloatValue="False" MinValue="0"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Подсказка" LabelPosition="Top" Margin="5 0 5 0">
+                        <DockPanel LastChildFill="True">
+                            <DockPanel LastChildFill="True">
+                                <TextBox HorizontalAlignment="Left" MaxHeight="60" VerticalAlignment="Top" Width="400"
+                                             Text="{Binding Hint, Mode=TwoWay}" DockPanel.Dock="Left" FontSize="14"
+                                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                             AcceptsReturn="True" AcceptsTab="True" MaxLength="500"/>
+                                <StackPanel Orientation="Vertical" Margin="10 0 0 5">
+                                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" 
+                                                    BarItemDisplayMode="Default" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Show_32x32.png}" 
+                                                       Command="{Binding OpenHintImageCommand}" CommandParameter="hint1"
+                                                       Content="Увеличить" Hint="Открыть изображение">
+                                        </dxb:BarButtonItem>
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=ImportImage_32x32.png}" 
+                                                       Command="{Binding LoadHintImageCommand}" CommandParameter="hint1"
+                                                               Content="Добавить" Hint="Добавить изображение">
+                                        </dxb:BarButtonItem>
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_32x32.png}" 
+                                                       Command="{Binding DeleteHintImageCommand}" CommandParameter="hint1"
+                                                       Content="Удалить" Hint="Удалить изображение">
+                                        </dxb:BarButtonItem>
+                                    </dxb:ToolBarControl>
+                                    <Image Stretch="Uniform" MaxWidth="350" MaxHeight="80" RenderOptions.BitmapScalingMode="HighQuality"
+                                           HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{Binding HintImage, Converter={StaticResource BytesToImageSourceConverter}}"></Setter>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </StackPanel>
+                            </DockPanel>
+                        </DockPanel>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Вторая подсказка" LabelPosition="Top" Margin="5 0 5 0">
+                        <DockPanel LastChildFill="True">
+                            <DockPanel LastChildFill="True">
+                                <TextBox HorizontalAlignment="Left" MaxHeight="60" VerticalAlignment="Top" Width="400"
+                                             Text="{Binding Hint2, Mode=TwoWay}" DockPanel.Dock="Left" FontSize="14"
+                                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                             AcceptsReturn="True" AcceptsTab="True" MaxLength="500"/>
+                                <StackPanel Orientation="Vertical" Margin="10 0 0 5">
+                                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" 
+                                                    BarItemDisplayMode="Default" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Show_32x32.png}" 
+                                                       Command="{Binding OpenHintImageCommand}" CommandParameter="hint2"
+                                                       Content="Увеличить" Hint="Открыть изображение">
+                                        </dxb:BarButtonItem>
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=ImportImage_32x32.png}" 
+                                                       Command="{Binding LoadHintImageCommand}" CommandParameter="hint2"
+                                                               Content="Добавить" Hint="Добавить изображение">
+                                        </dxb:BarButtonItem>
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_32x32.png}" 
+                                                       Command="{Binding DeleteHintImageCommand}" CommandParameter="hint2"
+                                                       Content="Удалить" Hint="Удалить изображение">
+                                        </dxb:BarButtonItem>
+                                    </dxb:ToolBarControl>
+                                    <Image Stretch="Uniform" MaxWidth="350" MaxHeight="80" RenderOptions.BitmapScalingMode="HighQuality"
+                                           HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{Binding Hint2Image, Converter={StaticResource BytesToImageSourceConverter}}"></Setter>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </StackPanel>
+                            </DockPanel>
+                        </DockPanel>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Третья подсказка" LabelPosition="Top" Margin="5 0 5 0">
+                        <DockPanel LastChildFill="True">
+                            <DockPanel LastChildFill="True">
+                                <TextBox HorizontalAlignment="Left" MaxHeight="60" VerticalAlignment="Top" Width="400"
+                                             Text="{Binding Hint3, Mode=TwoWay}" DockPanel.Dock="Left"
+                                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontSize="14"
+                                             AcceptsReturn="True" AcceptsTab="True" MaxLength="500"/>
+                                <StackPanel Orientation="Vertical" Margin="10 0 0 5">
+                                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" 
+                                                    BarItemDisplayMode="Default" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Show_32x32.png}" 
+                                                       Command="{Binding OpenHintImageCommand}" CommandParameter="hint3"
+                                                       Content="Увеличить" Hint="Открыть изображение">
+                                        </dxb:BarButtonItem>
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=ImportImage_32x32.png}" 
+                                                       Command="{Binding LoadHintImageCommand}" CommandParameter="hint3"
+                                                               Content="Добавить" Hint="Добавить изображение">
+                                        </dxb:BarButtonItem>
+                                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_32x32.png}" 
+                                                       Command="{Binding DeleteHintImageCommand}" CommandParameter="hint3"
+                                                       Content="Удалить" Hint="Удалить изображение">
+                                        </dxb:BarButtonItem>
+                                    </dxb:ToolBarControl>
+                                    <Image Stretch="Uniform" MaxWidth="350" MaxHeight="80" RenderOptions.BitmapScalingMode="HighQuality"
+                                           HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{Binding Hint3Image, Converter={StaticResource BytesToImageSourceConverter}}"></Setter>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </StackPanel>
+                            </DockPanel>
+                        </DockPanel>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </DockPanel>
+
+            <dxlc:LayoutGroup Header="Список ответов" View="GroupBox" GroupBoxDisplayMode="Light"
+                              HeaderTemplate="{StaticResource GroupHeaderTemplate}"
+                              Margin="5" MaxHeight="700">
+                <DockPanel LastChildFill="True">
+                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" DockPanel.Dock="Top" BarItemDisplayMode="ContentAndGlyph"
+                                        Margin="0 0 0 5">
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Add_16x16.png}" Command="{Binding AddAnswerCommand}"
+                                                   Content="Добавить" Hint="Добавить новое значение"/>
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_16x16.png}" Command="{Binding RemoveAnswerCommand}"
+                                                   Content="Удалить" Hint="Удалить значение"/>
+                    </dxb:ToolBarControl>
+
+                    <!--ТАБЛИЦА С ОТВЕТАМИ-->
+                    <dxg:GridControl Name="PropertiesGrid"                              
+                                     ItemsSource="{Binding AnswersCollection}"
+                                     SelectedItem="{Binding SelectedAnswer}"
+                                     SelectionMode="Row"
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    >
+                        <dxg:GridControl.View>
+                            <dxg:TableView 
+                                AllowPerPixelScrolling="True" 
+                                AutoWidth="False"
+                                AllowBestFit="False"                                   
+                                BestFitMode="VisibleRows"     
+                                ShowGroupPanel="False"
+                                ShowAutoFilterRow="False" 
+                                ShowSearchPanelCloseButton="True"
+                                HorizontalScrollbarVisibility="Auto"
+                                VerticalScrollbarVisibility="Auto"
+                                x:Name="view1"  
+                                FontSize="14"
+                                AllowMoveColumnToDropArea="False"
+                                AllowScrollAnimation="True" 
+                                UseLayoutRounding="False">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EventToCommand EventName="MouseDoubleClick" Command="{Binding OpenImageAnswerCommand}"></dxmvvm:EventToCommand>
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="FlagCorrectly2" Header="Ответ верный" 
+                                            HorizontalHeaderContentAlignment="Center" MinWidth="100" MaxWidth="100" FixedWidth="True"
+                                            Binding="{Binding FlagCorrectly2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:CheckEditSettings HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Content" Header="Текст ответа" HorizontalHeaderContentAlignment="Center"
+                                            Width="*"
+                                            Binding="{Binding Content, Mode=TwoWay}">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Stretch" TextWrapping="Wrap" AcceptsReturn="True"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="ContentImage" Header="Изображение" HorizontalHeaderContentAlignment="Center" Width="0.3*"
+                                            Binding="{Binding ContentImage, Mode=TwoWay, Converter={StaticResource BytesToImageSourceConverter}}">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ImageEditSettings HorizontalContentAlignment="Center" Stretch="Uniform" MaxWidth="100"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </DockPanel>
+            </dxlc:LayoutGroup>
+        </DockPanel>
+        <!--</dxlc:LayoutControl>-->
+    </Grid>
+</catel:DataWindow>
+
+
+<!--<dxlc:LayoutGroup Orientation="Horizontal">
+                <dxlc:LayoutGroup Header="Текст вопроса" Orientation="Vertical" VerticalAlignment="Center">
+                    <dxlc:LayoutItem Label="Текст вопроса">
+                        <dxe:TextEdit TextWrapping="Wrap" EditValue="{Binding Content}" Width="400" HorizontalAlignment="Left" />
+                        <TextBox HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="450"
+                                 Text="{Binding Content, Mode=TwoWay}"
+                                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                 AcceptsReturn="True" AcceptsTab="True"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Изображение">
+                        <DockPanel LastChildFill="True">
+                            <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" DockPanel.Dock="Bottom"
+                                                BarItemDisplayMode="Default" Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
+                                <dxb:BarButtonItem Glyph="{dx:DXImage Image=ImportImage_16x16.png}" Command="{Binding LoadImageCommand}"
+                                                   Content="Добавить" Hint="Добавить изображение"></dxb:BarButtonItem>
+                                <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_16x16.png}" Command="{Binding DeleteImageCommand}"
+                                                   Content="Удалить" Hint="Удалить изображение"></dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                            <Image Stretch="Uniform" MaxWidth="320" MaxHeight="320" Margin="5" RenderOptions.BitmapScalingMode="HighQuality">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{Binding ContentImage, Converter={StaticResource BytesToImageSourceConverter}}"></Setter>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DockPanel>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Количество баллов">
+                        <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"
+                                      Value="{Binding Score, Converter={StaticResource myIntConverter}, Mode=TwoWay}" IsFloatValue="False" MinValue="0"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Время на вопрос (секунд)">
+                        <dxe:SpinEdit HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"
+                                      Value="{Binding Duration, Converter={StaticResource myIntConverter}, Mode=TwoWay}" IsFloatValue="False" MinValue="0"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Подсказка">
+                        <TextBox HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="450"
+                                 Text="{Binding Hint, Mode=TwoWay}"
+                                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                 AcceptsReturn="True" AcceptsTab="True"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Вторая подсказка">
+                        <TextBox HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="450"
+                                 Text="{Binding Hint2, Mode=TwoWay}"
+                                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                 AcceptsReturn="True" AcceptsTab="True"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Третья подсказка">
+                        <TextBox HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="450"
+                                 Text="{Binding Hint3, Mode=TwoWay}"
+                                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                 AcceptsReturn="True" AcceptsTab="True"/>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>-->

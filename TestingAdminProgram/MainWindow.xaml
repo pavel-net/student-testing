@@ -1,0 +1,274 @@
+﻿<Window x:Class="TestingAdminProgram.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:local="clr-namespace:TestingAdminProgram"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="CanResize"
+        Title="Программа администрорования системы тестов" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Grid>
+        <dx:DXTabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged">
+            <dx:DXTabItem Header="Дисциплины">
+                <DockPanel LastChildFill="True">
+                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" DockPanel.Dock="Top" BarItemDisplayMode="ContentAndGlyph"
+                                    Margin="5 0 0 5">
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Save_16x16.png}"
+                                       Content="Сохранить" Hint="Сохранить изменения в базе" ItemClick="BarButtonItem_Save"/>
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Add_16x16.png}"
+                                       Content="Добавить" Hint="Добавить новую дисциплину" ItemClick="BarButtonItem_DisciplineAdd" />
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_16x16.png}"
+                                       Content="Удалить" Hint="Удалить выбранные дисциплины" ItemClick="BarButtonItem_DisciplineDelete" />
+                    </dxb:ToolBarControl>
+                    <dxg:GridControl x:Name="gridDiscipline" SelectionMode="Row"  Margin="5"
+                                     MaxHeight="800" MaxWidth="450" HorizontalAlignment="Left">
+                        <dxg:GridControl.View>
+                            <dxg:TableView 
+                        AllowPerPixelScrolling="True" 
+                        AutoWidth="True"
+                        AllowBestFit="True"                                   
+                        BestFitMode="VisibleRows"     
+                        ShowGroupPanel="False"
+                        ShowAutoFilterRow="False" 
+                        ShowSearchPanelCloseButton="True"
+                        HorizontalScrollbarVisibility="Auto"
+                        VerticalScrollbarVisibility="Auto"
+                        x:Name="view1"  
+                        AllowMoveColumnToDropArea="False"
+                        AllowScrollAnimation="True" 
+                        UseLayoutRounding="False">
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Name" Header="Название дисциплины" HorizontalHeaderContentAlignment="Center"
+                                    MaxWidth="400">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </DockPanel>
+            </dx:DXTabItem>
+
+
+            <!--ПРЕПОДАВАТЕЛИ-->
+            <dx:DXTabItem Header="Преподаватели">
+                <DockPanel LastChildFill="True">
+                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" DockPanel.Dock="Top" BarItemDisplayMode="ContentAndGlyph"
+                                    Margin="5 0 0 5">
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Save_16x16.png}"
+                                       Content="Сохранить" Hint="Сохранить изменения в базе" ItemClick="BarButtonItem_Save"/>
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Add_16x16.png}"
+                                       Content="Добавить" Hint="Добавить нового преподавателя" ItemClick="BarButtonItem_TeacherAdd" />
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_16x16.png}"
+                                       Content="Удалить" Hint="Удалить выбранных преподавателей" ItemClick="BarButtonItem_TeacherDelete" />
+                    </dxb:ToolBarControl>
+                    <dxg:GridControl x:Name="gridTeacher" SelectionMode="Row"  Margin="5"
+                                     MaxHeight="1000" MaxWidth="1000" HorizontalAlignment="Left">
+                        <dxg:GridControl.View>
+                            <dxg:TableView 
+                                AllowPerPixelScrolling="True" 
+                                AutoWidth="True"
+                                AllowBestFit="True"                                   
+                                BestFitMode="VisibleRows"     
+                                ShowGroupPanel="False"
+                                ShowAutoFilterRow="False" 
+                                ShowSearchPanelCloseButton="True"
+                                HorizontalScrollbarVisibility="Auto"
+                                VerticalScrollbarVisibility="Auto"
+                                AllowMoveColumnToDropArea="False"
+                                AllowScrollAnimation="True" 
+                                UseLayoutRounding="False">
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Fio" Header="ФИО" HorizontalHeaderContentAlignment="Center"
+                                    MaxWidth="400">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Post" Header="Должность" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="100">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Department" Header="Подразделение" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="100">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Login" Header="Логин" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="200">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Password" Header="Пароль" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="200">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </DockPanel>
+            </dx:DXTabItem>
+
+
+            <!--СТУДЕНТЫ-->
+            <dx:DXTabItem Header="Студенты">
+                <DockPanel LastChildFill="True">
+                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" DockPanel.Dock="Top" BarItemDisplayMode="ContentAndGlyph"
+                                    Margin="5 0 0 5">
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Save_16x16.png}"
+                                       Content="Сохранить" Hint="Сохранить изменения в базе" ItemClick="BarButtonItem_Save"/>
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_16x16.png}"
+                                       Content="Удалить" Hint="Удалить выбранных студентов" ItemClick="BarButtonItem_StudentDelete" />
+                    </dxb:ToolBarControl>
+                    <dxg:GridControl x:Name="gridStudent" SelectionMode="Row"  Margin="5"
+                                     MaxHeight="1000" MaxWidth="1000" HorizontalAlignment="Left">
+                        <dxg:GridControl.View>
+                            <dxg:TableView 
+                                AllowPerPixelScrolling="True" 
+                                AutoWidth="True"
+                                AllowBestFit="True"                                   
+                                BestFitMode="VisibleRows"     
+                                ShowGroupPanel="False"
+                                ShowAutoFilterRow="False" 
+                                ShowSearchPanelCloseButton="True"
+                                HorizontalScrollbarVisibility="Auto"
+                                VerticalScrollbarVisibility="Auto"
+                                AllowMoveColumnToDropArea="False"
+                                AllowScrollAnimation="True" 
+                                UseLayoutRounding="False">
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Name" Header="Фамилия" HorizontalHeaderContentAlignment="Center"
+                                    MaxWidth="200">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Surname" Header="Имя" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="200">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="MiddleName" Header="Отчество" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="200">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="GroupNumber" Header="Номер группы" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="200">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </DockPanel>
+            </dx:DXTabItem>
+
+
+            <!--РЕЗУЛЬТАТЫ ТЕСТОВ-->
+            <dx:DXTabItem Header="Результаты тестов">
+                <DockPanel LastChildFill="True">
+                    <dxb:ToolBarControl AllowQuickCustomization="False" Caption="Standard" DockPanel.Dock="Top" BarItemDisplayMode="ContentAndGlyph"
+                                    Margin="5 0 0 5">
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Save_16x16.png}"
+                                       Content="Сохранить" Hint="Сохранить изменения в базе" ItemClick="BarButtonItem_Save"/>
+                        <dxb:BarButtonItem Glyph="{dx:DXImage Image=Delete_16x16.png}"
+                                       Content="Удалить" Hint="Удалить выбранные результаты" ItemClick="BarButtonItem_TestDelete" />
+                    </dxb:ToolBarControl>
+                    <dxg:GridControl x:Name="gridTest" SelectionMode="Row"  Margin="5"
+                                     MaxHeight="1000" MaxWidth="1000" HorizontalAlignment="Left">
+                        <dxg:GridControl.View>
+                            <dxg:TableView 
+                                AllowPerPixelScrolling="True" 
+                                AutoWidth="True"
+                                AllowBestFit="True"                                   
+                                BestFitMode="VisibleRows"     
+                                ShowGroupPanel="False"
+                                ShowAutoFilterRow="False" 
+                                ShowSearchPanelCloseButton="True"
+                                HorizontalScrollbarVisibility="Auto"
+                                VerticalScrollbarVisibility="Auto"
+                                AllowMoveColumnToDropArea="False"
+                                AllowScrollAnimation="True" 
+                                UseLayoutRounding="False">
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Test.Name" Header="Название теста" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="200" ReadOnly="True" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Student.Name" Header="Фамилия" HorizontalHeaderContentAlignment="Center"
+                                    MaxWidth="200" ReadOnly="True" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Student.Surname" Header="Имя" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="150" ReadOnly="True">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Student.MiddleName" Header="Отчество" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="150" ReadOnly="True">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="TestDate" Header="Дата тестирования" ReadOnly="True" 
+                                            FixedWidth="False" Width="160"                                    
+                                            FilterPopupMode="DateAlt"       
+                                            HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="d" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Student.GroupNumber" Header="Номер группы" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="140" ReadOnly="True">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings HorizontalContentAlignment="Left" TextWrapping="Wrap"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="TotalScore" Header="Балл" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="50" ReadOnly="True">
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Rating1" Header="Оценка" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="50" ReadOnly="True">
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Rating2" Header="Оценка 2" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="50" ReadOnly="True">
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Rating3" Header="Оценка 3" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="70" ReadOnly="True">
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Duration" Header="Длительность" HorizontalHeaderContentAlignment="Center"
+                                            MaxWidth="50" ReadOnly="True">
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </DockPanel>
+            </dx:DXTabItem>
+        </dx:DXTabControl>
+    </Grid>
+</Window>
